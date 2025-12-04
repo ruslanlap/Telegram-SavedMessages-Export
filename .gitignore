@@ -5,7 +5,8 @@ venv/
 # Environment & local secrets
 .env
 telegram_notion_config.json
-
+/serena
+/.serena
 # Session and auth artifacts
 *.session
 
