@@ -64,7 +64,7 @@ jobs:
 
       - name: Build executable
         run: |
-          pyinstaller --name=TelegramNotionExporter --onefile --windowed --icon=icon.ico --add-data="icon.ico:." --hidden-import=pyrogram --hidden-import=notion_client --hidden-import=PyQt6 --clean telegram_notion_gui.py
+          pyinstaller --name=TelegramNotionExporter --onefile --windowed --icon=icon.icns --add-data="icon.icns:." --hidden-import=pyrogram --hidden-import=notion_client --hidden-import=PyQt6 --clean telegram_notion_gui.py
 
       - name: Create release package
         run: |

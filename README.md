@@ -17,14 +17,45 @@ If you, like me, use Telegram Saved Messages as a notebook, this tool makes it e
   - Filter by hashtags
   - Filter by message type (Text, Photo, Video, Document, Audio, Voice, GIF, etc.)
   - Filter by date range
-  - Filter messages with URLs only
-  - Filter messages with/without media
   - Limit number of messages
 - **Two Interfaces**:
   - **GUI Application** — User-friendly desktop app (Windows/Mac/Linux)
-  - **CLI Script** — Command-line interface for automation and scripting
+- **CLI Script** — Command-line interface for automation and scripting
 - **Secure Authentication** — Supports Telegram 2FA (two-factor authentication)
 - **Session Persistence** — Login once, export multiple times
+
+## Download ready builds
+
+> Always use the artifact that matches your platform.
+
+- **Windows (.zip)**  
+  [Download latest](https://github.com/ruslanlap/Telegram-SavedMessages-Export/releases/latest/download/TelegramNotionExporter-Windows.zip)  
+  1) Unzip  2) Run `TelegramNotionExporter.exe`
+
+- **Linux (.tar.gz)**  
+  [Download latest](https://github.com/ruslanlap/Telegram-SavedMessages-Export/releases/latest/download/TelegramNotionExporter-Linux.tar.gz)  
+  ```bash
+  tar -xzf TelegramNotionExporter-Linux.tar.gz
+  cd release
+  chmod +x TelegramNotionExporter
+  ./TelegramNotionExporter
+  ```
+
+- **macOS (.tar.gz)**  
+  [Download latest](https://github.com/ruslanlap/Telegram-SavedMessages-Export/releases/latest/download/TelegramNotionExporter-macOS.tar.gz)  
+  ```bash
+  tar -xzf TelegramNotionExporter-macOS.tar.gz
+  cd release
+  chmod +x TelegramNotionExporter
+  ./TelegramNotionExporter
+  ```
+
+### Using the downloaded app
+1. Open the app (run the executable for your platform).
+2. **Credentials tab:** enter Telegram API ID, API Hash, and your phone number; enter Notion Token and Database ID (for Notion export).
+3. **Filters tab:** optional filters (keywords, hashtags, types, dates).
+4. **Export tab:** choose destination (Notion / JSON / CSV / Markdown) and file path if exporting to file.
+5. Click **Start Export** → enter the Telegram code and 2FA password if requested.
 
 ## Screenshots
 

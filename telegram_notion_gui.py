@@ -1019,21 +1019,25 @@ class MainWindow(QMainWindow):
 
 
 def get_icon_path():
-    """Get the path to the application icon"""
-    # Check multiple possible locations
-    possible_paths = [
-        Path(__file__).parent / "icon.ico",
-        Path(sys.executable).parent / "icon.ico",
-        Path("icon.ico"),
-    ]
+    """Get the path to the application icon (prefers .icns on macOS)"""
+    is_macos = sys.platform == "darwin"
+    preferred_ext = ".icns" if is_macos else ".ico"
+    fallback_ext = ".ico" if is_macos else ".icns"
     
-    # For PyInstaller bundled app
-    if getattr(sys, 'frozen', False):
-        possible_paths.insert(0, Path(sys._MEIPASS) / "icon.ico")
+    def candidates(ext):
+        paths = [
+            Path(__file__).parent / f"icon{ext}",
+            Path(sys.executable).parent / f"icon{ext}",
+            Path(f"icon{ext}"),
+        ]
+        if getattr(sys, 'frozen', False):
+            paths.insert(0, Path(sys._MEIPASS) / f"icon{ext}")
+        return paths
     
-    for path in possible_paths:
-        if path.exists():
-            return str(path)
+    for ext in (preferred_ext, fallback_ext):
+        for path in candidates(ext):
+            if path.exists():
+                return str(path)
     return None
 
 
