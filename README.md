@@ -63,6 +63,8 @@ If you, like me, use Telegram Saved Messages as a notebook, this tool makes it e
 
 ![Telegram Notion Exporter GUI](assets/demo.png)
 
+![Telegram Notion Exporter GUI - Export Options](assets/demo2.png)
+
 The GUI provides a tabbed interface with:
 - **Credentials Tab** — Enter Telegram API and Notion credentials
 - **Filters Tab** — Configure message filters
