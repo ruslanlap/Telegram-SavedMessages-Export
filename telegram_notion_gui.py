@@ -253,7 +253,10 @@ class ExportWorker(QThread):
             
             self.finished.emit(success, failed)
         finally:
-            await telegram.stop()
+            try:
+                await telegram.disconnect()
+            except Exception:
+                pass  # Ignore disconnect errors
     
     def _matches_filters(self, message):
         """Check if message matches all filters"""
@@ -1015,6 +1018,25 @@ class MainWindow(QMainWindow):
             self.worker.cancel()
 
 
+def get_icon_path():
+    """Get the path to the application icon"""
+    # Check multiple possible locations
+    possible_paths = [
+        Path(__file__).parent / "icon.ico",
+        Path(sys.executable).parent / "icon.ico",
+        Path("icon.ico"),
+    ]
+    
+    # For PyInstaller bundled app
+    if getattr(sys, 'frozen', False):
+        possible_paths.insert(0, Path(sys._MEIPASS) / "icon.ico")
+    
+    for path in possible_paths:
+        if path.exists():
+            return str(path)
+    return None
+
+
 def main():
     """Application entry point"""
     app = QApplication(sys.argv)
@@ -1022,8 +1044,18 @@ def main():
     # Set application style
     app.setStyle("Fusion")
     
+    # Set application icon
+    icon_path = get_icon_path()
+    if icon_path:
+        app.setWindowIcon(QIcon(icon_path))
+    
     # Create and show main window
     window = MainWindow()
+    
+    # Set window icon
+    if icon_path:
+        window.setWindowIcon(QIcon(icon_path))
+    
     window.show()
     
     sys.exit(app.exec())

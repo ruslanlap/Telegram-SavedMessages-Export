@@ -25,8 +25,6 @@ def build():
         "--name=TelegramNotionExporter",
         "--onefile",                    # Single executable
         "--windowed",                   # No console window
-        "--icon=icon.ico",              # Icon (optional)
-        f"--add-data=README.md{sep}.",  # Include README
         "--hidden-import=pyrogram",
         "--hidden-import=notion_client",
         "--hidden-import=PyQt6",
@@ -34,13 +32,14 @@ def build():
         "telegram_notion_gui.py"
     ]
     
-    # Remove icon option if no icon file
-    if not os.path.exists("icon.ico"):
-        cmd.remove("--icon=icon.ico")
+    # Add icon if exists (for exe icon AND runtime access)
+    if os.path.exists("icon.ico"):
+        cmd.insert(-1, "--icon=icon.ico")
+        cmd.insert(-1, f"--add-data=icon.ico{sep}.")
     
-    # Remove README option if no README
-    if not os.path.exists("README.md"):
-        cmd.remove(f"--add-data=README.md{sep}.")
+    # Add README if exists
+    if os.path.exists("README.md"):
+        cmd.insert(-1, f"--add-data=README.md{sep}.")
     
     print("=" * 50)
     print("Building Telegram Notion Exporter")
