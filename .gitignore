@@ -1,0 +1,24 @@
+# Virtual environments
+venv/
+.venv/
+
+# Environment & local secrets
+.env
+telegram_notion_config.json
+
+# Session and auth artifacts
+*.session
+
+# Python cache/bytecode
+__pycache__/
+*.pyc
+
+# Build outputs
+dist/
+build/
+*.spec
+
+# OS/editor junk
+.DS_Store
+.idea/
+.vscode/
