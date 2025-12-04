@@ -2,6 +2,8 @@
 
 Export your Telegram Saved Messages to Notion database or local files (JSON, CSV, Markdown).
 
+![GitHub stars](https://img.shields.io/github/stars/ruslanlap/Telegram-SavedMessages-Export?style=flat&logo=github)
+![GitHub Downloads](https://img.shields.io/github/downloads/ruslanlap/Telegram-SavedMessages-Export/total?style=flat&logo=github)
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![PyQt6](https://img.shields.io/badge/GUI-PyQt6-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
