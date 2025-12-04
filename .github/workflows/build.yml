@@ -1,0 +1,147 @@
+name: Build GUI Application
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller pyrogram tgcrypto notion-client python-dotenv PyQt6
+
+      - name: Build executable
+        run: |
+          pyinstaller --name=TelegramNotionExporter --onefile --windowed --hidden-import=pyrogram --hidden-import=notion_client --hidden-import=PyQt6 --clean telegram_notion_gui.py
+
+      - name: Create release package
+        run: |
+          mkdir release
+          copy dist\TelegramNotionExporter.exe release\
+          copy README.md release\
+          copy telegram_auth.py release\
+          copy requirements.txt release\
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TelegramNotionExporter-Windows
+          path: release/
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxcb-cursor0 libxkbcommon-x11-0 libegl1
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller pyrogram tgcrypto notion-client python-dotenv PyQt6
+
+      - name: Build executable
+        run: |
+          pyinstaller --name=TelegramNotionExporter --onefile --windowed --hidden-import=pyrogram --hidden-import=notion_client --hidden-import=PyQt6 --clean telegram_notion_gui.py
+
+      - name: Create release package
+        run: |
+          mkdir -p release
+          cp dist/TelegramNotionExporter release/
+          cp README.md release/
+          cp telegram_auth.py release/
+          cp requirements.txt release/
+          chmod +x release/TelegramNotionExporter
+
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TelegramNotionExporter-Linux
+          path: release/
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller pyrogram tgcrypto notion-client python-dotenv PyQt6
+
+      - name: Build executable
+        run: |
+          pyinstaller --name=TelegramNotionExporter --onefile --windowed --hidden-import=pyrogram --hidden-import=notion_client --hidden-import=PyQt6 --clean telegram_notion_gui.py
+
+      - name: Create release package
+        run: |
+          mkdir -p release
+          cp dist/TelegramNotionExporter release/
+          cp README.md release/
+          cp telegram_auth.py release/
+          cp requirements.txt release/
+          chmod +x release/TelegramNotionExporter
+
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TelegramNotionExporter-macOS
+          path: release/
+
+  release:
+    needs: [build-windows, build-linux, build-macos]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create ZIP archives
+        run: |
+          cd artifacts/TelegramNotionExporter-Windows
+          zip -r ../TelegramNotionExporter-Windows.zip .
+          cd ../TelegramNotionExporter-Linux
+          tar -czvf ../TelegramNotionExporter-Linux.tar.gz .
+          cd ../TelegramNotionExporter-macOS
+          tar -czvf ../TelegramNotionExporter-macOS.tar.gz .
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            artifacts/TelegramNotionExporter-Windows.zip
+            artifacts/TelegramNotionExporter-Linux.tar.gz
+            artifacts/TelegramNotionExporter-macOS.tar.gz
+          generate_release_notes: true
